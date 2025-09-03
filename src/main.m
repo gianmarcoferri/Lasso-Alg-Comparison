@@ -1,7 +1,7 @@
 % California Housing Lasso Regression Comparison
 
 % Read dataset
-dataset = readtable('california_housing_processed.csv');
+dataset = readtable('dataset/california_housing_processed.csv');
 
 % Normalize features (optional but typical for regression)
 dataset{:, 1:8} = normalize(dataset{:, 1:8}, "range"); % Columns 1-8 are features
@@ -100,3 +100,4 @@ function plot_loss(lasso, label)
         hold off
     end
 end
+
