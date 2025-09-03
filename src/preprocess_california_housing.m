@@ -1,7 +1,7 @@
 % Preprocess California Housing Dataset for Lasso Regression
 
 % Load raw data
-raw = readtable('california_housing.csv');
+raw = readtable('dataset/california_housing.csv');
 
 % Check for missing values in total_bedrooms and fill with median
 if any(ismissing(raw.total_bedrooms))
@@ -24,6 +24,6 @@ processed = array2table([features_norm target], ...
     'VariableNames', [raw.Properties.VariableNames(1:8) raw.Properties.VariableNames(9)]);
 
 % Save to new CSV
-writetable(processed, 'california_housing_processed.csv');
+writetable(processed, 'dataset/california_housing_processed.csv');
 
-disp('Preprocessing complete. Saved as california_housing_processed.csv');
+disp('Preprocessing complete. Saved as california_housing_processed.csv in the dataset folder.');
