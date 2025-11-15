@@ -1,5 +1,5 @@
 # Lasso Regression Algorithms Comparison from scratch
-This project implements and compares three optimization algorithms for solving Lasso regression on the California Housing Prices dataset [California Housing Prices](https://www.kaggle.com/datasets/camnugent/california-housing-prices). The algorithms are implemented from scratch in MATLAB and include: ISTA (Iterative Soft-Thresholding Algorithm), ADMM (Alternating Direction Method of Multipliers), and a simulated distributed version of ADMM across multiple agents.
+This project implements and compares three optimization algorithms for solving Lasso regression on the [California Housing Prices dataset](https://www.kaggle.com/datasets/camnugent/california-housing-prices). The algorithms are implemented from scratch in MATLAB and include: ISTA (Iterative Soft-Thresholding Algorithm), ADMM (Alternating Direction Method of Multipliers), and a simulated distributed version of ADMM across multiple agents.
 
 ## Algorithms Implemented
 1. **ISTA (Iterative Soft-Thresholding Algorithm)**  
@@ -61,3 +61,4 @@ The algorithms were executed with the following parameters:
 - ADMM-Dist achieves nearly identical accuracy to centralized ADMM but requires more iterations due to coordination overhead
 - ISTA shows the slowest convergence, failing to reach the tolerance within the maximum iterations
 - The distributed version provides a practical trade-off for scenarios where data is naturally partitioned
+
