@@ -24,6 +24,6 @@ processed = array2table([features_norm target], ...
     'VariableNames', [raw.Properties.VariableNames(1:8) raw.Properties.VariableNames(9)]);
 
 % Save to new CSV
-writetable(processed, 'dataset/california_housing_processed.csv');
+writetable(processed, 'california_housing_processed.csv');
 
-disp('Preprocessing complete. Saved as california_housing_processed.csv in the dataset folder.');
+disp('Preprocessing complete. Saved as california_housing_processed.csv');
