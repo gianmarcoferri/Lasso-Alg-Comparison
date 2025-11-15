@@ -1,28 +1,48 @@
 # Lasso Regression Algorithms Comparison from scratch
-This project aims to address the Lasso regression problem using various algorithms on the [California Housing Prices](https://www.kaggle.com/datasets/camnugent/california-housing-prices). Three different approaches have been implemented: ISTA (Iterative Soft-Thresholding Algorithm), ADMM (Alternating Direction Method of Multipliers), and a simulated distributed version of ADMM across multiple agents. The project provides a comparison of these algorithms based on computation times, iterations required for convergence, and convergence conditions visualized through graphs.
+This project implements and compares three optimization algorithms for solving Lasso regression on the California Housing Prices dataset [California Housing Prices](https://www.kaggle.com/datasets/camnugent/california-housing-prices). The algorithms are implemented from scratch in MATLAB and include: ISTA (Iterative Soft-Thresholding Algorithm), ADMM (Alternating Direction Method of Multipliers), and a simulated distributed version of ADMM across multiple agents.
 
-# Algorithms Implemented
-The algorithms are implemented within the "LassoReg" class, allowing users to choose between different algorithms for training, set step-size, convergence tolerance, maximum iterations, and penalty terms.
-
-1. **Soft-Thresholding (ISTA)**  
-   In this algorithm, the Lasso regression problem is solved through iterative gradient descent until convergence. The non-differentiable L1 norm is managed using the concept of subdifferential and the soft-thresholding operator.
+## Algorithms Implemented
+1. **ISTA (Iterative Soft-Thresholding Algorithm)**  
+   - Solves Lasso regression through iterative gradient descent with soft-thresholding
+   - Handles the non-differentiable L1 norm using subdifferential concepts
+   - Simple implementation but slower convergence for non-smooth problems
 
 2. **ADMM (Alternating Direction Method of Multipliers)**  
-   The Lasso problem is reformulated with an additional slack variable, and the ADMM approach is used for solving it. ADMM splits the problem into subproblems, each of which can be solved efficiently. The convergence criteria are based on primal and dual residuals.
+    - Reformulates Lasso with slack variables and solves via variable splitting
+   - Alternates between optimizing primal and dual variables
+   - Extremely fast convergence with closed-form solutions at each step
 
 3. **Distributed ADMM**  
-   The original Lasso problem is amenable to distributed computation due to the separable structure of the observation vector and the data matrix. The problem is distributed across multiple agents, each optimizing its portion of the data while periodically exchanging information with a central node. This approach enhances scalability and efficiency for large datasets.
+   - Partitions data across multiple computational agents
+   - Each agent optimizes locally while coordinating through a consensus variable
+   - Ideal for large-scale or inherently distributed datasets
 
-# Usage
-To use the algorithms, instantiate the "LassoReg" class with desired parameters. The class provides flexibility in choosing algorithms and fine-tuning hyperparameters for your specific problem.
+## Usage
+The algorithms are implemented in the `LassoReg` MATLAB class:
 
-# Convergence Criteria
-For ISTA, convergence is determined by the change in the solution between iterations falling below a specified threshold.
+```matlab
+% Initialize with parameters
+lasso = LassoReg(step_size, max_iterations, l1_penalty, tolerance);
 
-For ADMM and Distributed ADMM, convergence relies on calculating primal and dual residuals, comparing them against tolerance thresholds. When both residuals meet the convergence criteria, the algorithm terminates.
+% Fit using different algorithms
+lasso.fit(X, Y, "gd");        % ISTA
+lasso.fit(X, Y, "admm");      % ADMM  
+lasso.fit(X, Y, "dist", 8);   % Distributed ADMM with 8 agents
+```
 
-## Result and Comparisons
+## Parameters
+- step_size: Learning rate for ISTA, penalty parameter for ADMM (default: 0.01)
+- max_iterations: Maximum number of iterations (default: 50000)
+- l1_penalty: L1 regularization strength (default: 1)
+- tolerance: Convergence threshold (default: 1e-4)
+- agents: Number of agents for distributed ADMM (default: 8)
 
+## Convergence Criteria
+- ISTA: Stops when ‖w_new - w_old‖ < tolerance
+- ADMM: Stops when primal and dual residuals fall below adaptive tolerance thresholds
+- Distributed ADMM: Uses consensus-based residuals across all agents
+
+## Result and Performance Comparisons
 The algorithms were executed with the following parameters:
 - Max iterations = 50000
 - Step-size = 0.01
@@ -30,13 +50,14 @@ The algorithms were executed with the following parameters:
 - Tolerance = 1e-4
 - Agents = 8 (Distributed ADMM)
 
-The performance comparison is presented in Table 1.
-
 | Algorithm  | R2     | Time (s) | Iterations |
 |------------|--------|----------|------------|
-| ISTA       | 0.5588 | 12.876   | 50000      |
-| ADMM       | 0.5839 | 0.0010   | 4          |
-| ADMM-Dist  | 0.5726 | 0.0376   | 170        |
+| ISTA       | 0.5339 | 4.3333   | 50000      |
+| ADMM       | 0.5793 | 0.0004   | 4          |
+| ADMM-Dist  | 0.5794 | 0.0363   | 216        |
 
-The comparison table displays the R2 scores, computation times, and iterations required to achieve convergence for each algorithm.
-
+## Key Findings
+- ADMM demonstrates superior performance, converging in just 4 iterations with the highest R² score
+- ADMM-Dist achieves nearly identical accuracy to centralized ADMM but requires more iterations due to coordination overhead
+- ISTA shows the slowest convergence, failing to reach the tolerance within the maximum iterations
+- The distributed version provides a practical trade-off for scenarios where data is naturally partitioned
