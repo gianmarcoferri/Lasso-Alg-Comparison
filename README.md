@@ -25,7 +25,7 @@ The algorithms are implemented in the `LassoReg` MATLAB class:
 lasso = LassoReg(step_size, max_iterations, l1_penalty, tolerance);
 
 % Fit using different algorithms
-lasso.fit(X, Y, "gd");        % ISTA
+lasso.fit(X, Y, "ista");      % ISTA
 lasso.fit(X, Y, "admm");      % ADMM  
 lasso.fit(X, Y, "dist", 8);   % Distributed ADMM with 8 agents
 ```
@@ -61,4 +61,5 @@ The algorithms were executed with the following parameters:
 - ADMM-Dist achieves nearly identical accuracy to centralized ADMM but requires more iterations due to coordination overhead
 - ISTA shows the slowest convergence, failing to reach the tolerance within the maximum iterations
 - The distributed version provides a practical trade-off for scenarios where data is naturally partitioned
+
 
